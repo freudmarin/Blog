@@ -1,0 +1,27 @@
+﻿@model Blog.ViewModels.PostViewModel
+
+@{
+  
+}
+
+<div>
+    <form asp-controller="Home" asp-action="Index" method="get">
+
+        <input type="text" value="@Model.search"  name="search" />
+        <input type="submit" class="btn btn-primary" /> 
+    </form>
+     <ul>
+            @foreach (var post in Model.Posts)
+            {
+               <li> 
+                    <a asp-controller="Home" asp-action="Post" asp-route-id="@post.Id">
+                        @post.Title
+                   </a>
+                </li>
+        
+               <p> @post.Body</p>  
+   
+            }
+        </ul>
+        
+</div>

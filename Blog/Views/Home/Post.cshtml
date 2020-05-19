@@ -1,0 +1,56 @@
+﻿@model Blog.Models.Post
+@{
+    ViewBag.Title = Model.Title;
+
+}
+
+<h1>@Model.Title</h1>
+
+
+
+ <div class="container">
+
+
+     <div class="post no-shadow">
+         @if (!String.IsNullOrEmpty(Model.Image))
+         {
+             var image_path = $"/images/{Model.Image}";
+             <img src="@image_path" /> <br/>
+             <span class="title">@Model.Title</span> <br/>
+         }
+         </div>
+             <div class="post-body">
+                 <p>@Html.Raw(Model.Body)</p>
+             </div>
+             <div class="comments-section">
+                 @{
+
+                   await  Html.RenderPartialAsync("_MainComment", new Blog.ViewModels.CommentViewModel { PostId = Model.Id, MainCommentId = 0 });
+                 }
+                 @foreach( var c in Model.MainComments)
+                 {
+                     <p>
+                         @c.Message 
+                         <br/>
+                         @c.Created
+                     </p>
+                     
+                     <div>
+                         <h6> SubComments </h6>
+                         @{
+
+                             await Html.RenderPartialAsync("_MainComment", new Blog.ViewModels.CommentViewModel { PostId = Model.Id, MainCommentId = c.Id});
+                         }
+                         @foreach (var sc in c.SubComments)
+                         {
+
+                             @sc.Message
+                             <br />
+                             @sc.Created
+                         }
+
+                     </div>
+                 }
+             </div>
+         </div>
+     
